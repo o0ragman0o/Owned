@@ -4,6 +4,11 @@ An expanded `Owned` API for user and inter-contract ownership and safe ownership
 
 This API encodes a safe pattern of contract ownership transfers in which ownership does not change until the new owner accepts the ownership thus proving the new owner address is capable of calling. This prevents inadvertant loss of contract control by assigning ownership to a wrong address.
 
+### ABI
+```
+[{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_newOwner","type":"address"}],"name":"ChangeOwnerTo","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_oldOwner","type":"address"},{"indexed":true,"name":"_newOwner","type":"address"}],"name":"ChangedOwner","type":"event"}]
+```
+
 ### owner
 ```
 function owner() public constant returns (address);
@@ -42,6 +47,8 @@ Allows the contract to accept ownership by calling `acceptOwnership()` of anothe
 
 returns success boolean.
 
+Optional: Requires implementation per contract requirement
+
 ### ChangeOwner
 ```
 event ChangeOwnerTo(address indexed _newOwner);
@@ -58,3 +65,5 @@ Triggered on change of owner address.
 event ReceivedOwnership(address indexed _kAddr);
 ```
 Triggered when the contract accepts ownership of another contract.
+
+Optional: Requires implementation per contract requirement

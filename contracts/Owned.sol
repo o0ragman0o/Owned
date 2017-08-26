@@ -1,7 +1,7 @@
 /******************************************************************************\
 
 file:   Owned.sol
-ver:    0.1.0
+ver:    0.2.0
 updated:26-Aug-2017
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
@@ -39,7 +39,7 @@ contract OwnedAbstract {
     event ChangedOwner(address indexed _oldOwner, address indexed _newOwner);
 
     /// @dev Triggered when the contract accepts ownership of another contract.
-    event ReceivedOwnership(address indexed _kAddr);
+    // event ReceivedOwnership(address indexed _kAddr);
 
 //
 // Modifiers
@@ -66,7 +66,7 @@ contract OwnedAbstract {
     /// @notice This contract will call `_kAddr`.acceptOwnership()
     /// @param _kAddr A thirdparty contract which this contract can accept
     /// ownership
-    function receiveOwnership(address _kAddr) public returns (bool);
+    // function receiveOwnership(address _kAddr) public returns (bool);
 }
 
 // Example implementation.
@@ -92,12 +92,16 @@ contract Owned is OwnedAbstract{
 		return true;
 	}
 
-	function receiveOwnership(address _kAddr)
-		public
-		returns (bool)
-	{
-		require(OwnedAbstract(_kAddr).acceptOwnership());
-	    ReceivedOwnership(_kAddr);
-	    return true;
-	}
+
+    // Implempent for contracts with ownership functionality over other
+    // contracts
+    // 	function receiveOwnership(address _kAddr)
+    // 		public
+    // 		returns (bool)
+    // 	{
+    // 	    return false;
+    // 		require(OwnedAbstract(_kAddr).acceptOwnership());
+    // 	    ReceivedOwnership(_kAddr);
+    // 	    return true;
+    // 	}
 }
