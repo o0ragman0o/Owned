@@ -77,7 +77,7 @@ contract Owned is OwnedAbstract{
 		onlyOwner
 		returns (bool)
 	{
-		newOwner == _newOwner;
+		newOwner = _newOwner;
 	    ChangeOwnerTo(_newOwner);
 		return true;
 	}
