@@ -1,8 +1,8 @@
 /******************************************************************************\
 
 file:   Owned.sol
-ver:    0.2.0
-updated:26-Aug-2017
+ver:    0.3.0
+updated:8-Nov-2017
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
 
@@ -15,6 +15,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See MIT Licence for further details.
 <https://opensource.org/licenses/MIT>.
 
+Change Log
+----------
+* fixed == to = bug in `changeOwner()`. Thanks @hugopeixoto
+* Added contract `Owning`
 \******************************************************************************/
 
 pragma solidity ^0.4.13;
@@ -32,14 +36,11 @@ contract OwnedAbstract {
 	/// @return An address which can accept ownership.
 	address newOwner;
 
-	/// @dev Triggered on initiation of change owner address
+	/// @dev Logged on initiation of change owner address
     event ChangeOwnerTo(address indexed _newOwner);
 
-    /// @dev Triggered on change of owner address
+    /// @dev Logged on change of owner address
     event ChangedOwner(address indexed _oldOwner, address indexed _newOwner);
-
-    /// @dev Triggered when the contract accepts ownership of another contract.
-    // event ReceivedOwnership(address indexed _kAddr);
 
 //
 // Modifiers
@@ -54,19 +55,13 @@ contract OwnedAbstract {
 // Function Abstracts
 //
 
-    /// @notice Initiate a change of owner to `_newOowner`
+    /// @notice Initiate a change of owner to `_newOwner`
     /// @param _newOwner The address to which ownership is to be transfered
     function changeOwner(address _newOwner) public returns (bool);
 
     /// @dev optional
     /// @notice Finalise change of ownership to newOwner
     function acceptOwnership() public returns (bool);
-
-    /// @dev optional
-    /// @notice This contract will call `_kAddr`.acceptOwnership()
-    /// @param _kAddr A thirdparty contract which this contract can accept
-    /// ownership
-    // function receiveOwnership(address _kAddr) public returns (bool);
 }
 
 // Example implementation.
@@ -77,7 +72,7 @@ contract Owned is OwnedAbstract{
 		onlyOwner
 		returns (bool)
 	{
-		newOwner == _newOwner;
+		newOwner = _newOwner;
 	    ChangeOwnerTo(_newOwner);
 		return true;
 	}
@@ -91,17 +86,4 @@ contract Owned is OwnedAbstract{
 		owner = msg.sender;
 		return true;
 	}
-
-
-    // Implempent for contracts with ownership functionality over other
-    // contracts
-    // 	function receiveOwnership(address _kAddr)
-    // 		public
-    // 		returns (bool)
-    // 	{
-    // 	    return false;
-    // 		require(OwnedAbstract(_kAddr).acceptOwnership());
-    // 	    ReceivedOwnership(_kAddr);
-    // 	    return true;
-    // 	}
 }
