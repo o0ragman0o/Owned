@@ -24,11 +24,15 @@ pragma solidity ^0.4.13;
 
 import "./Owned.sol";
 
-contract Owning
+contract Owning is Owned
 {
     /// @dev Logged when the contract accepts ownership of another contract.
     event ReceivedOwnership(address indexed _kAddr);
 
+    /// @dev Logged when the contract initiates an ownership change in a
+    /// contract it owns.
+    event ChangeOwnerOf(address indexed _kAddr, address indexed _owner);
+    
     /// @notice Contract to recieve ownership of `_kAddr`
     /// @param _kAddr An address of an `Owned` contract
     function receiveOwnershipOf(address _kAddr)
@@ -39,4 +43,19 @@ contract Owning
          ReceivedOwnership(_kAddr);
          return true;
      }
+
+    /// @notice Change the owner of the owned contract `_kAddr` to `_owner`
+    /// @param _kAddr The address of the owned contract
+    /// @param _owner The address of the new owner
+    /// @dev could be used to migrate to an upgraded SandalStraps
+    /// @return bool value indicating success
+    function changeOwnerOf(address _kAddr, address _owner)
+        public
+        onlyOwner
+        returns (bool)
+    {
+        require(Owned(_kAddr).changeOwner(_owner));
+        ChangeOwnerOf(_kAddr, _owner);
+        return true;
+    }
 }
