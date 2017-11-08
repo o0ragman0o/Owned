@@ -30,11 +30,11 @@ contract OwnedAbstract {
 //
 
     /// @return The address of the contract's owner
-	address owner;
+	address public owner;
 
 	/// @dev optional
 	/// @return An address which can accept ownership.
-	address newOwner;
+	address public newOwner;
 
 	/// @dev Logged on initiation of change owner address
     event ChangeOwnerTo(address indexed _newOwner);
@@ -63,6 +63,7 @@ contract OwnedAbstract {
     /// @notice Finalise change of ownership to newOwner
     function acceptOwnership() public returns (bool);
 }
+
 
 // Example implementation.
 contract Owned is OwnedAbstract{

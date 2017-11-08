@@ -31,7 +31,7 @@ contract Owning
 
     /// @notice Contract to recieve ownership of `_kAddr`
     /// @param _kAddr An address of an `Owned` contract
-    function receiveOwnership(address _kAddr)
+    function receiveOwnershipOf(address _kAddr)
          public
          returns (bool)
      {
