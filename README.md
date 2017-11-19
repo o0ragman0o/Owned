@@ -15,6 +15,9 @@ not change until the new owner accepts the ownership thus proving the new owner
 address is capable of calling. This prevents inadvertant loss of contract
 control by assigning ownership to an incorrect address.
 
+This contract does not initialise the owner with an address and must be done by
+the deriving contract
+
 ### ABI
 ```
 [{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function","stateMutability":"nonpayable"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function","stateMutability":"view"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function","stateMutability":"nonpayable"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function","stateMutability":"view"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_newOwner","type":"address"}],"name":"ChangeOwnerTo","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_oldOwner","type":"address"},{"indexed":true,"name":"_newOwner","type":"address"}],"name":"ChangedOwner","type":"event"}]
@@ -59,7 +62,7 @@ event ChangedOwner(address indexed _oldOwner, address indexed _newOwner);
 ```
 Logged on change of owner address.
 
-## Owning
+## Owning is Owned
 A contract of type `Owning` provisions the contract to call `acceptOwnership()`
 upon an `Owned` contract.
 
@@ -95,3 +98,23 @@ Returns boolean success value
 event ReceivedOwnership(address indexed _kAddr);
 ```
 Logged when a contract accepts ownership of another contract.
+
+## Disownable is Owned
+Disownable is an `Owned` contract that explicitly allows deleting the `owner`.  This may be a requirement for trustless contracts.
+
+### ABI
+```
+[{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_safePhrase","type":"bytes32"}],"name":"burnOwnership","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_newOwner","type":"address"}],"name":"ChangeOwnerTo","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_oldOwner","type":"address"},{"indexed":true,"name":"_newOwner","type":"address"}],"name":"ChangedOwner","type":"event"}]
+```
+
+### burnOwnership
+```
+function burnOwnership(bytes32 _safePhrase);
+```
+Deletes the `owner` state variable.
+
+WARNING: This will block all calls to functions which are permissioned only to the owner.
+
+`_safePhrase` Must be equal to the string *"This contract is to be disowned."*
+
+Returns boolean success value

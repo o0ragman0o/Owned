@@ -57,10 +57,12 @@ contract OwnedAbstract {
 
     /// @notice Initiate a change of owner to `_newOwner`
     /// @param _newOwner The address to which ownership is to be transfered
+    /// @return A boolean success value
     function changeOwner(address _newOwner) public returns (bool);
 
     /// @dev optional
     /// @notice Finalise change of ownership to newOwner
+    /// @return A boolean success value
     function acceptOwnership() public returns (bool);
 }
 
