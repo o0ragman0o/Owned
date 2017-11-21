@@ -1,8 +1,8 @@
 /******************************************************************************\
 
 file:   Owned.sol
-ver:    0.3.0
-updated:8-Nov-2017
+ver:    0.3.1
+updated:21-Nov-2017
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
 
@@ -17,8 +17,7 @@ See MIT Licence for further details.
 
 Change Log
 ----------
-* fixed == to = bug in `changeOwner()`. Thanks @hugopeixoto
-* Added contract `Owning`
+* Added interface to `Owning.sol
 \******************************************************************************/
 
 pragma solidity ^0.4.13;

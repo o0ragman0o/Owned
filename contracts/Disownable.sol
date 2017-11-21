@@ -1,8 +1,8 @@
 /*****************************************************************************\
 
 file:   Disownable.sol
-ver:    0.3.0
-updated:19-Nov-2017
+ver:    0.3.1
+updated:21-Nov-2017
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
 
@@ -16,14 +16,23 @@ See MIT Licence for further details.
 
 Change Log
 ----------
-* new
+* Added interface to `Owning.sol
+
 \*****************************************************************************/
 
 pragma solidity ^0.4.13;
 
 import "./Owned.sol";
 
-contract Disownable is Owned
+interface DisownableItfc
+{
+    /// @notice WARNING: This will remove all ownership of the contract
+    /// @param _safePhrase Must be equal to "This contract is to be disowned."
+    /// @return A boolean success value
+	function burnOwnership(bytes32 _safePhrase) public returns (bool);
+}
+
+contract Disownable is Owned, DisownableItfc
 {
     /// @notice WARNING: This will remove all ownership of the contract
     /// @param _safePhrase Must be equal to "This contract is to be disowned."
