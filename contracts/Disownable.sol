@@ -17,6 +17,10 @@ See MIT Licence for further details.
 Change Log
 ----------
 * Using Solidity 0.4.24 syntax
+* dropped use of `interface` and reverting back to abstract contracts. see:
+  https://github.com/ethereum/solidity/issues/4832
+* Changed from `Itfc` to `Abstract` suffix
+
 
 \*****************************************************************************/
 
@@ -24,15 +28,15 @@ pragma solidity ^0.4.24;
 
 import "./Owned.sol";
 
-interface DisownableItfc
+contract DisownableAbstract
 {
     /// @notice WARNING: This will remove all ownership of the contract
     /// @param _safePhrase Must be equal to "This contract is to be disowned."
     /// @return A boolean success value
-	function burnOwnership(bytes32 _safePhrase) external returns (bool);
+	function burnOwnership(bytes32 _safePhrase) public returns (bool);
 }
 
-contract Disownable is Owned, DisownableItfc
+contract Disownable is Owned, DisownableAbstract
 {
     /// @notice WARNING: This will remove all ownership of the contract
     /// @param _safePhrase Must be equal to "This contract is to be disowned."

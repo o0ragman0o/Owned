@@ -18,6 +18,9 @@ See MIT Licence for further details.
 Change Log
 ----------
 * Using Solidity 0.4.24 syntax
+* dropped use of `interface` and reverting back to abstract contracts. see:
+  https://github.com/ethereum/solidity/issues/4832
+* Changed from `Itfc` to `Abstract` suffix
 
 \*****************************************************************************/
 
@@ -25,7 +28,7 @@ pragma solidity ^0.4.24;
 
 import "./Owned.sol";
 
-interface OwningItfc
+contract OwningAbstract
 {
     /// @dev Logged when the contract accepts ownership of another contract.
     event ReceivedOwnership(address indexed _kAddr);
@@ -36,7 +39,7 @@ interface OwningItfc
 
     /// @notice Contract to recieve ownership of `_kAddr`
     /// @param _kAddr An address of an `Owned` contract
-    function receiveOwnershipOf(address _kAddr) external returns (bool);
+    function receiveOwnershipOf(address _kAddr) public returns (bool);
 
     /// @notice Change the owner of the owned contract `_kAddr` to `_owner`
     /// @param _kAddr The address of the owned contract
@@ -44,11 +47,11 @@ interface OwningItfc
     /// @dev could be used to migrate to an upgraded SandalStraps
     /// @return bool value indicating success
     function changeOwnerOf(address _kAddr, address _owner)
-        external returns (bool);
+        public returns (bool);
 }
 
 
-contract Owning is Owned, OwningItfc
+contract Owning is Owned, OwningAbstract
 {
     /// @notice Contract to recieve ownership of `_kAddr`
     /// @param _kAddr An address of an `Owned` contract
