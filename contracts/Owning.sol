@@ -1,8 +1,8 @@
 /*****************************************************************************\
 
 file:   Owning.sol
-ver:    0.3.1
-updated:21-Nov-2017
+ver:    0.3.2
+updated:16-Aug-18
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
 
@@ -17,10 +17,11 @@ See MIT Licence for further details.
 
 Change Log
 ----------
-* Added OwningItfc
+* Using Solidity 0.4.24 syntax
+
 \*****************************************************************************/
 
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.24;
 
 import "./Owned.sol";
 
@@ -35,7 +36,7 @@ interface OwningItfc
 
     /// @notice Contract to recieve ownership of `_kAddr`
     /// @param _kAddr An address of an `Owned` contract
-    function receiveOwnershipOf(address _kAddr) public returns (bool);
+    function receiveOwnershipOf(address _kAddr) external returns (bool);
 
     /// @notice Change the owner of the owned contract `_kAddr` to `_owner`
     /// @param _kAddr The address of the owned contract
@@ -43,7 +44,7 @@ interface OwningItfc
     /// @dev could be used to migrate to an upgraded SandalStraps
     /// @return bool value indicating success
     function changeOwnerOf(address _kAddr, address _owner)
-        public returns (bool);
+        external returns (bool);
 }
 
 
@@ -52,12 +53,12 @@ contract Owning is Owned, OwningItfc
     /// @notice Contract to recieve ownership of `_kAddr`
     /// @param _kAddr An address of an `Owned` contract
     function receiveOwnershipOf(address _kAddr)
-         public
-         returns (bool)
+        public
+        returns (bool)
      {
-         require(OwnedAbstract(_kAddr).acceptOwnership());
-         ReceivedOwnership(_kAddr);
-         return true;
+        require(OwnedAbstract(_kAddr).acceptOwnership());
+        emit ReceivedOwnership(_kAddr);
+        return true;
      }
 
     /// @notice Change the owner of the owned contract `_kAddr` to `_owner`
@@ -71,7 +72,7 @@ contract Owning is Owned, OwningItfc
         returns (bool)
     {
         require(Owned(_kAddr).changeOwner(_owner));
-        ChangeOwnerOf(_kAddr, _owner);
+        emit ChangeOwnerOf(_kAddr, _owner);
         return true;
     }
 }

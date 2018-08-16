@@ -1,8 +1,8 @@
 /******************************************************************************\
 
 file:   Owned.sol
-ver:    0.3.1
-updated:21-Nov-2017
+ver:    0.3.2
+updated:16-Aug-2018
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
 
@@ -17,10 +17,11 @@ See MIT Licence for further details.
 
 Change Log
 ----------
-* Added interface to `Owning.sol
+* Using Solidity 0.4.24 syntax
+* 
 \******************************************************************************/
 
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.24;
 
 contract OwnedAbstract {
 
@@ -75,7 +76,7 @@ contract Owned is OwnedAbstract{
 		returns (bool)
 	{
 		newOwner = _newOwner;
-	    ChangeOwnerTo(_newOwner);
+	    emit ChangeOwnerTo(_newOwner);
 		return true;
 	}
 
@@ -84,7 +85,7 @@ contract Owned is OwnedAbstract{
 		returns (bool)
 	{
 		require(msg.sender == newOwner);
-	    ChangedOwner(owner, msg.sender);
+	    emit ChangedOwner(owner, msg.sender);
 		owner = msg.sender;
 		return true;
 	}

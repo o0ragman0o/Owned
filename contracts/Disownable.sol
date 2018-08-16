@@ -1,8 +1,8 @@
 /*****************************************************************************\
 
 file:   Disownable.sol
-ver:    0.3.1
-updated:21-Nov-2017
+ver:    0.3.2
+updated:16-Aug-2016
 author: Darryl Morris (o0ragman0o)
 email:  o0ragman0o AT gmail.com
 
@@ -16,11 +16,11 @@ See MIT Licence for further details.
 
 Change Log
 ----------
-* Added interface to `Owning.sol
+* Using Solidity 0.4.24 syntax
 
 \*****************************************************************************/
 
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.24;
 
 import "./Owned.sol";
 
@@ -29,7 +29,7 @@ interface DisownableItfc
     /// @notice WARNING: This will remove all ownership of the contract
     /// @param _safePhrase Must be equal to "This contract is to be disowned."
     /// @return A boolean success value
-	function burnOwnership(bytes32 _safePhrase) public returns (bool);
+	function burnOwnership(bytes32 _safePhrase) external returns (bool);
 }
 
 contract Disownable is Owned, DisownableItfc
@@ -43,7 +43,7 @@ contract Disownable is Owned, DisownableItfc
 		returns (bool)
 	{
 		require(_safePhrase == "This contract is to be disowned.");
-    	ChangedOwner(owner, 0x0);
+    	emit ChangedOwner(owner, 0x0);
 		delete owner;
 		return true;
 	}
